@@ -1,116 +1,40 @@
-# 家族スケジュール管理アプリ
+# 家族スケジュール管理アプリ（v2）
 
-シンプルで使いやすい長期休暇スケジュール管理アプリです。
+田中家の長期休暇の「泊まる場所＋予定」を管理し、画像化して家族に共有するアプリ。
+2026年にUI/UXとバグを根治するため Vite + React + TypeScript で全面再構築（v1の単一HTMLは `legacy/index.html` にバックアップ）。
 
-## 🚀 アプリを使う
+## 主な特徴
+- **縦長・転置テーブル**（日付=行／家族=列）でスマホ縦持ちでもそのまま読める。
+- **塗る／書くモード切替**：塗る=タップで泊まる場所の色、書く=タップで予定文字（定番チップ・IME対応）。消しゴム/同色再タップで色消し。
+- **期間ごとに自動保存**（localStorage）。リロードしても消えない。期間一覧から再選択・削除。
+- **画像で共有/保存**：スマホは共有シート（Web Share）、PCはJPEG保存。タイトル・凡例を焼き込み。
+- タイトル自動生成 例：`260810~0817_田中家 お盆予定`。
+- 家族名・泊まる場所（名前/色/短縮字）・家族ラベル・定番予定は**アプリ内設定で編集可**。
 
-**スマホ・PC・タブレットからアクセス:**
-[https://your-username.github.io/family-schedule-app/](https://your-username.github.io/family-schedule-app/)
-
-*※URLは後ほど更新されます*
-
-## 🌟 主な機能
-
-### 必須機能
-- ✅ **長期休暇選択**: GW・お盆・年末年始などの定番休暇 + カスタム期間設定
-- ✅ **カレンダーUI**: 日付×家族メンバーの表形式で予定を表示
-- ✅ **泊まる場所の色分け**: 
-  - 雄家（水色）
-  - 紗家（ピンク）
-  - 姫路（緑）
-  - 旅行（オレンジ）
-- ✅ **予定入力**: 選択式 + 自由入力の両対応
-- ✅ **JPEG画像ダウンロード**: カレンダーを画像として保存
-- ✅ **レスポンシブデザイン**: スマホ・タブレット対応
-
-### 発展的機能
-- ✅ **ローカル保存**: 複数のスケジュールを保存・読み込み
-- ✅ **データ管理**: スケジュールの保存・削除・全データクリア
-- ✅ **視覚的プレビュー**: モーダル内で予定の色分けプレビュー
-- ✅ **直感的UI**: ホバー効果・アニメーション
-
-## 🚀 使い方
-
-1. **休暇期間の選択**: 定番の休暇から選ぶか、カスタム期間を設定
-2. **予定入力**: カレンダーのセルをクリックして予定と泊まる場所を設定
-3. **色分け確認**: 泊まる場所に応じて自動的に背景色が変更
-4. **画像エクスポート**: 「JPEG画像でダウンロード」ボタンで共有用画像を生成
-5. **データ保存**: スケジュールに名前を付けて保存し、後で再利用可能
-
-## 💻 開発・実行方法
-
-### 自動実行（推奨）
-```batch
-# バッチファイルをダブルクリック
-start.bat
-```
-
-### 手動実行
+## 開発
 ```bash
-# 依存関係のインストール
 npm install
-
-# 開発サーバー起動
-npm run dev
+npm run dev      # http://localhost:5173/
+npm run build    # dist/ を生成
+npm run preview
 ```
 
-ブラウザで `http://localhost:5173/` にアクセス
+## デプロイ（Netlify）
+- git連携なら push で自動反映（`netlify.toml`：build=`npm run build` / publish=`dist`）。
+- 非連携なら `npm run build` 後に `dist/` をNetlifyにドラッグ配備。
 
-## 📁 ファイル構成
-
+## 構成
 ```
-family-schedule-app/
-├── src/
-│   ├── components/          # UIコンポーネント
-│   │   ├── Calendar.tsx     # カレンダー表示
-│   │   ├── HolidaySelector.tsx # 休暇選択
-│   │   ├── ScheduleModal.tsx   # 予定入力モーダル
-│   │   ├── ExportButton.tsx    # 画像エクスポート
-│   │   └── DataManager.tsx     # データ管理
-│   ├── hooks/
-│   │   └── useLocalStorage.ts  # ローカルストレージフック
-│   ├── utils/
-│   │   └── dateUtils.ts        # 日付ユーティリティ
-│   ├── types.ts             # TypeScript型定義
-│   ├── constants.ts         # 定数・初期データ
-│   └── App.tsx             # メインアプリケーション
-├── package.json
-└── README.md
+src/
+  components/  Grid, Cell, ModeBar, HolidaySelector, PeriodList, Legend, ExportView, Settings
+  hooks/       useLocalStorage, useSettings, useScheduleStore
+  lib/         dateUtils, holidays, title, exportImage
+  types.ts, constants.ts, App.tsx, main.tsx, styles.css
+legacy/index.html   # v1（旧・単一HTML）バックアップ
 ```
 
-## 🛠️ 技術スタック
-
-- **Frontend**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **Styling**: CSS3 (Flexbox, Grid)
-- **Date Handling**: date-fns
-- **Icons**: Lucide React
-- **Image Export**: html2canvas
-- **State Management**: React Hooks + LocalStorage
-
-## 📱 レスポンシブ対応
-
-- デスクトップ: フル機能での快適な操作
-- タブレット: タッチ操作に最適化
-- スマートフォン: コンパクトなUI表示
-
-## 🎨 デザインの特徴
-
-- **視認性重視**: 色分けと境界線で情報を整理
-- **直感的操作**: クリック・タップで簡単予定入力
-- **モダンUI**: カードデザインとシャドウ効果
-- **アクセシビリティ**: コントラスト比を考慮した色選択
-
-## 📋 今後の拡張可能性
-
-- Googleカレンダー連携
-- PDF出力機能
-- 複数家族対応
-- 通知機能
-- クラウド同期
-
----
-
-**作成日**: 2025年7月30日  
-**作成者**: Claude Code  
-**バージョン**: 1.0.0
+## データ（localStorage / v2スキーマ）
+- `fsa:v2:periods` 期間メタ一覧（uuidキー）
+- `fsa:v2:schedules` 期間ID→セル（`memberId:date` → {locationId?, text?}）
+- `fsa:v2:active` 選択中の期間ID
+- `fsa:v2:settings` 家族・場所・ラベル・定番予定

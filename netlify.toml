@@ -1,0 +1,11 @@
+# Netlify（git連携時に自動反映される設定）
+# 非連携（ドラッグ配備）の場合は `npm run build` 後に dist/ をNetlifyにドロップする。
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA用フォールバック（今は単一ページだが将来ルーティング追加に備え）
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

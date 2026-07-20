@@ -1,0 +1,592 @@
+:root {
+  --bg: #f2f4f7;
+  --card: #ffffff;
+  --ink: #2c3e50;
+  --muted: #7a8699;
+  --line: #dfe4ea;
+  --accent: #2e86de;
+  --accent-ink: #1b4f8a;
+  --danger: #e74c3c;
+  --sat: #eaf2ff;
+  --sat-ink: #2e6bd6;
+  --sun: #ffeceb;
+  --sun-ink: #d64541;
+  --empty: #f7f8fa;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP',
+    Meiryo, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
+
+/* ---------- layout ---------- */
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px 12px 24px;
+}
+.app.schedule {
+  padding-bottom: 150px; /* 下部固定モードバー分 */
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.topbar h1 {
+  font-size: 1.1rem;
+}
+.topbar .ttl {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.98rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topbar-actions {
+  display: flex;
+  gap: 6px;
+}
+.icon {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.05rem;
+  display: grid;
+  place-items: center;
+}
+.icon:active {
+  transform: scale(0.96);
+}
+
+/* ---------- cards / start ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.card h2 {
+  font-size: 1.02rem;
+  margin-bottom: 12px;
+}
+.muted {
+  color: var(--muted);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 10px;
+  color: var(--muted);
+}
+.tabs button.active {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  background: #eef6ff;
+  font-weight: 700;
+}
+
+.preset-list {
+  display: grid;
+  gap: 8px;
+}
+.preset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+}
+.preset:active {
+  background: #f4f8ff;
+}
+.preset-name {
+  font-weight: 700;
+}
+.preset-range {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.custom-form {
+  display: grid;
+  gap: 10px;
+}
+.custom-form label,
+.period-edit label,
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.custom-form input,
+.period-edit input,
+.field input {
+  font-size: 16px; /* iOSの自動ズーム防止 */
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+}
+.error {
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+.primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.primary:disabled {
+  opacity: 0.5;
+}
+.primary.wide {
+  width: 100%;
+}
+
+.period-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.period-list li {
+  display: flex;
+  gap: 8px;
+}
+.period-open {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+}
+.period-name {
+  font-weight: 700;
+}
+.period-range {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.period-del {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 12px;
+  width: 48px;
+  font-size: 1.05rem;
+}
+
+.period-edit {
+  display: grid;
+  gap: 10px;
+}
+
+/* ---------- legend ---------- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+.legend-label {
+  color: var(--muted);
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.legend-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.warn {
+  background: #fff7e6;
+  border: 1px solid #ffe0a3;
+  color: #8a6d3b;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+}
+
+/* ---------- table ---------- */
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+table.grid {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+.grid th,
+.grid td {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #eef1f5;
+  color: var(--ink);
+  font-size: 0.9rem;
+  padding: 8px 4px;
+  min-width: 72px;
+}
+.grid th.corner {
+  left: 0;
+  z-index: 3;
+  min-width: 58px;
+}
+.grid th.date-h {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #f3f5f8;
+  font-size: 0.8rem;
+  padding: 6px 6px;
+  min-width: 58px;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--ink);
+}
+.grid th.date-h.sat {
+  background: var(--sat);
+  color: var(--sat-ink);
+}
+.grid th.date-h.sun {
+  background: var(--sun);
+  color: var(--sun-ink);
+}
+.grid td.cell {
+  position: relative;
+  height: 46px;
+  min-width: 72px;
+  text-align: center;
+  vertical-align: middle;
+  background: var(--empty);
+  padding: 2px;
+}
+.grid td.cell.selected {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+.cell-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2px 3px;
+}
+.cell-short {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.45);
+}
+.cell-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1f2d3d;
+  word-break: break-word;
+  line-height: 1.15;
+}
+.cell-input {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  background: #fff;
+  color: #1f2d3d;
+}
+
+/* ---------- share / modebar ---------- */
+.share-row {
+  margin: 14px 0;
+}
+.share-row .primary {
+  width: 100%;
+}
+
+.modebar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+}
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.mode-toggle button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: #f6f7f9;
+  border-radius: 10px;
+  color: var(--muted);
+  font-weight: 700;
+}
+.mode-toggle button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.mode-context {
+  min-height: 44px;
+}
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+.chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.chip.active {
+  border-color: var(--accent);
+  background: #eef6ff;
+  font-weight: 700;
+}
+.chip.eraser.active {
+  border-color: #888;
+  background: #f0f0f0;
+}
+.chip-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: grid;
+  place-items: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #333;
+}
+.mode-hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 12px 4px;
+}
+
+/* ---------- overlay / settings ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sheet {
+  background: #fff;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 18px 18px 0 0;
+  padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+}
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.close {
+  border: none;
+  background: #f0f0f0;
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
+}
+.field {
+  margin-bottom: 16px;
+}
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--ink);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.row input[type='text'] {
+  flex: 1;
+  font-size: 16px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.row input.short-in {
+  flex: 0 0 48px;
+  text-align: center;
+}
+.row input[type='color'] {
+  width: 42px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 2px;
+}
+.mini {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 0.85rem;
+}
+.mini.danger {
+  color: var(--danger);
+  border-color: #f3c6c1;
+}
+.mini.danger:disabled {
+  opacity: 0.4;
+}
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 168px;
+  transform: translateX(-50%);
+  background: rgba(30, 40, 55, 0.95);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  z-index: 80;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- export view (off-screen) ---------- */
+.export-view {
+  position: fixed;
+  left: -100000px;
+  top: 0;
+  width: max-content;
+  background: #fff;
+  padding: 20px;
+}
+.export-view .export-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+.export-view .legend {
+  margin-bottom: 12px;
+}
+/* エクスポート用テーブルは sticky を無効化（崩れ防止） */
+.grid.plain thead th,
+.grid.plain th.date-h,
+.grid.plain th.corner {
+  position: static;
+}
+.grid.plain td.cell,
+.grid.plain th {
+  min-width: 84px;
+}
+.grid.plain th.date-h {
+  min-width: 66px;
+}
+.grid.plain .cell-text {
+  font-size: 0.86rem;
+}
