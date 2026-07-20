@@ -73,6 +73,13 @@ export default function App() {
     }
   };
 
+  // 長押し/ドラッグの連続塗り（トグルなし。消しゴムは連続消し）
+  const paintCellDrag = (memberId: string, date: string) => {
+    store.setCell(memberId, date, {
+      locationId: paintTarget === 'eraser' ? undefined : paintTarget,
+    });
+  };
+
   const commitEdit = () => {
     if (selected) store.setCell(selected.memberId, selected.date, { text: editingText });
     setEditing(false);
@@ -195,6 +202,7 @@ export default function App() {
           editing={editing}
           editingText={editingText}
           onCellPointer={handleCellPointer}
+          onPaintDragCell={paintCellDrag}
           onEditingText={setEditingText}
           onCommit={commitEdit}
           onCancel={cancelEdit}

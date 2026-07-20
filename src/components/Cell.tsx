@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import type { CellData, Location } from '../types';
 
 interface CellProps {
+  memberId: string;
+  date: string;
   cell?: CellData;
   location?: Location;
   mode: 'paint' | 'write';
@@ -15,6 +17,8 @@ interface CellProps {
 }
 
 export function Cell({
+  memberId,
+  date,
   cell,
   location,
   mode,
@@ -43,6 +47,8 @@ export function Cell({
       className={`cell${selected ? ' selected' : ''}`}
       style={{ backgroundColor: location?.color ?? '#f7f7f7' }}
       onClick={onPointer}
+      data-member={memberId}
+      data-date={date}
     >
       {isWriting ? (
         <input
