@@ -37,7 +37,9 @@ export function HolidaySelector({ onCreate }: Props) {
               className="preset"
               onClick={() => onCreate({ id: uid(), ...p })}
             >
-              <span className="preset-name">{p.name}</span>
+              <span className="preset-name">
+                {p.startDate.slice(0, 4)}年 {p.name}
+              </span>
               <span className="preset-range">
                 {formatMD(p.startDate)} 〜 {formatMD(p.endDate)}
               </span>

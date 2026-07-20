@@ -1,5 +1,19 @@
 import type { Period } from '../types';
-import { todayISO } from './dateUtils';
+import { parseLocal, toISOLocal, todayISO } from './dateUtils';
+
+// 指定日から直前の土曜（当日が土曜ならそのまま）
+function prevSaturday(iso: string): string {
+  const d = parseLocal(iso);
+  while (d.getDay() !== 6) d.setDate(d.getDate() - 1);
+  return toISOLocal(d);
+}
+
+// 指定日から直後の日曜（当日が日曜ならそのまま）
+function nextSunday(iso: string): string {
+  const d = parseLocal(iso);
+  while (d.getDay() !== 0) d.setDate(d.getDate() + 1);
+  return toISOLocal(d);
+}
 
 export function uid(): string {
   const c = globalThis.crypto as Crypto | undefined;
@@ -21,8 +35,10 @@ export function defaultHolidayPresets(now: Date = new Date()): PresetTemplate[] 
     endDate,
   });
   for (const y of [Y - 1, Y, Y + 1]) {
-    list.push(mk('ゴールデンウィーク', `${y}-04-29`, `${y}-05-06`));
-    list.push(mk('お盆', `${y}-08-10`, `${y}-08-17`));
+    // GW: 4/29(昭和の日)直前の土曜 〜 5/6
+    list.push(mk('ゴールデンウィーク', prevSaturday(`${y}-04-29`), `${y}-05-06`));
+    // お盆: 8/11(山の日)直前の土曜 〜 8/15直後の日曜（2026年は8/8〜8/16）
+    list.push(mk('お盆', prevSaturday(`${y}-08-11`), nextSunday(`${y}-08-15`)));
     // 年末年始は開始日の年で扱う（12/28〜翌1/5）
     list.push(mk('年末年始', `${y}-12-28`, `${y + 1}-01-05`));
   }
